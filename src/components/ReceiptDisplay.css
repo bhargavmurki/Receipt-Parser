@@ -1,0 +1,44 @@
+/* src/components/ReceiptDisplay.css */
+
+.receipt-display {
+    background-color: #ffffff;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    max-width: 800px; /* Consistent width */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.receipt-header {
+    margin-bottom: 24px;
+    font-size: 1.2rem; /* Slightly smaller header size */
+    font-weight: 500;
+}
+
+.receipt-display table {
+    font-size: 1rem;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.receipt-display th, .receipt-display td {
+    text-align: left;
+    font-size: 1rem;
+    padding: 14px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.receipt-display th {
+    background-color: #f9f9f9;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.weighted-item {
+    background-color: #e3f2fd; /* Consistent background for weighted items */
+    border-radius: 6px;
+    padding: 12px;
+}

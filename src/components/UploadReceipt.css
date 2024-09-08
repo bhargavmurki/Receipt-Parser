@@ -1,0 +1,53 @@
+/* src/components/UploadReceipt.css */
+
+.upload-receipt {
+    background-color: #ffffff; /* White background for a clean look */
+    border-radius: 8px; /* Consistent border radius for all containers */
+    padding: 24px; /* Consistent padding */
+    margin-bottom: 40px; /* Consistent margin for separation */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    max-width: 800px; /* Maximum width for better readability */
+    margin-left: auto; /* Center align horizontally */
+    margin-right: auto; /* Center align horizontally */
+}
+
+.upload-container {
+    display: flex;
+    align-items: center; /* Center align items vertically */
+    gap: 16px; /* Consistent spacing between items */
+    margin-top: 16px; /* Consistent margin from top */
+}
+
+.upload-container input[type="file"] {
+    flex: 1; /* Flex-grow to fill available space */
+    padding: 12px; /* Consistent padding */
+    border: 1px solid #ddd; /* Light border for clarity */
+    border-radius: 6px; /* Slightly rounded corners for consistency */
+    font-size: 16px; /* Consistent font size */
+}
+ 
+.upload-container button {
+    padding: 12px 20px; /* Consistent button padding */
+    border: none;
+    border-radius: 6px; /* Matching border radius */
+    background-color: #0073ff; /* Primary button color */
+    color: #ffffff; /* White text for contrast */
+    cursor: pointer;
+    font-size: 16px; /* Consistent font size */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
+}
+
+.upload-container button:hover {
+    background-color: #0056b3; /* Darker color for hover */
+    transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+.error-message {
+    color: #dc3545; /* Consistent error color */
+    font-size: 14px; /* Slightly smaller font size for error messages */
+    margin-top: 12px; /* Consistent margin for spacing */
+}
+
+.receipt-content {
+    margin-top: 24px; /* Consistent margin for separation from elements above */
+}

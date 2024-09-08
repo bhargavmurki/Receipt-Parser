@@ -1,0 +1,50 @@
+/* src/components/Modal.css */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+.modal-actions button {
+    margin-left: 12px;
+}
+
+.modal-actions .confirm-button {
+    background-color: #dc3545; /* Consistent button color for confirm actions */
+}
+
+.modal-actions .confirm-button:hover {
+    background-color: #c82333; /* Darker shade for hover */
+}
+
+.modal-actions .cancel-button {
+    background-color: #6c757d; /* Grey color for cancel actions */
+}
+
+.modal-actions .cancel-button:hover {
+    background-color: #5a6268; /* Darker grey for hover */
+}

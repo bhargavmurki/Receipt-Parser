@@ -1,0 +1,75 @@
+/* src/components/SplitItems.css */
+
+.split-items {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 30px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    max-width: 800px; /* Consistent width */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.friends-list {
+    display: flex;
+    align-items: center; /* Center align items vertically */
+    gap: 16px; /* Consistent spacing between items */
+    margin-top: 16px; /* Consistent margin from top */
+}
+
+.friends-list input {
+    flex: 1; /* Flex-grow to fill available space */
+    padding: 12px; /* Consistent padding */
+    border: 1px solid #ddd; /* Light border for clarity */
+    border-radius: 6px; /* Slightly rounded corners for consistency */
+    font-size: 16px; /* Consistent font size */
+}
+
+.friends-list button {
+    padding: 12px 20px; /* Consistent button padding */
+    border: none;
+    border-radius: 6px; /* Matching border radius */
+    background-color: #0073ff; /* Primary button color */
+    color: #ffffff; /* White text for contrast */
+    cursor: pointer;
+    font-size: 16px; /* Consistent font size */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
+}
+
+.friends-list button:hover {
+    background-color: #0056b3; /* Darker color for hover */
+    transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+.split-items table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.split-items th, .split-items td {
+    text-align: left;
+    padding: 14px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.split-items th {
+    background-color: #f9f9f9;
+    font-weight: 700;
+}
+
+.totals {
+    background-color: #e3f2fd; /* Consistent background color */
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.totals ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.totals li {
+    margin-bottom: 5px;
+}

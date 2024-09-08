@@ -10,7 +10,8 @@ const itemSchema = new mongoose.Schema({
             description: String,
             quantity: Number,
             price: Number,
-            totalPrice: Number
+            totalPrice: Number,
+            isWeighted: Boolean
         }
     ]
 });
