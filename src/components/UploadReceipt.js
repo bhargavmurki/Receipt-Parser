@@ -5,7 +5,7 @@ import SplitItems from './SplitItems';
 import './UploadReceipt.css';
 
 const API_PORT = process.env.REACT_APP_API_PORT || 5002;
-const API_URL = `http://localhost:${API_PORT}/receipts`;
+const API_URL = `http://localhost:${API_PORT}/process-receipt`;
 
 const UploadReceipt = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -34,6 +34,7 @@ const UploadReceipt = () => {
                 const response = await axios.post(API_URL, {
                     image: base64String
                 });
+                console.log('Receipt response:', response.data); // Log the response data
                 setReceipt(response.data);
             } catch (error) {
                 console.error('Error uploading receipt:', error);

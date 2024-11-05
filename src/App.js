@@ -10,7 +10,7 @@ const App = () => (
         </header>
         <main className="container">
             <UploadReceipt />
-            <ReceiptList />
+            {/* <ReceiptList /> */}
         </main>
     </div>
 );
