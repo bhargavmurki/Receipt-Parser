@@ -26,3 +26,4 @@ STRUCT.md
 *.db
 .idea/
 backend/.env
+git_safety_analysis.md

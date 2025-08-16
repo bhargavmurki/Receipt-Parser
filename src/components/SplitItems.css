@@ -1,75 +1,367 @@
-/* src/components/SplitItems.css */
+/* Split Items Component Styles */
 
 .split-items {
-    background-color: #ffffff;
-    border-radius: 8px;
-    padding: 24px;
-    margin-top: 30px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    max-width: 800px; /* Consistent width */
-    margin-left: auto;
-    margin-right: auto;
+  overflow: hidden;
 }
 
-.friends-list {
-    display: flex;
-    align-items: center; /* Center align items vertically */
-    gap: 16px; /* Consistent spacing between items */
-    margin-top: 16px; /* Consistent margin from top */
+.split-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.1);
 }
 
-.friends-list input {
-    flex: 1; /* Flex-grow to fill available space */
-    padding: 12px; /* Consistent padding */
-    border: 1px solid #ddd; /* Light border for clarity */
-    border-radius: 6px; /* Slightly rounded corners for consistency */
-    font-size: 16px; /* Consistent font size */
+.split-icon {
+  background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+  color: white;
+  padding: 0.75rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.friends-list button {
-    padding: 12px 20px; /* Consistent button padding */
-    border: none;
-    border-radius: 6px; /* Matching border radius */
-    background-color: #0073ff; /* Primary button color */
-    color: #ffffff; /* White text for contrast */
-    cursor: pointer;
-    font-size: 16px; /* Consistent font size */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
+.split-info h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 0.5rem 0;
 }
 
-.friends-list button:hover {
-    background-color: #0056b3; /* Darker color for hover */
-    transform: scale(1.05); /* Slight scale effect on hover */
+.split-info p {
+  color: #666;
+  margin: 0;
+  font-size: 0.95rem;
 }
 
-.split-items table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-.split-items th, .split-items td {
-    text-align: left;
-    padding: 14px;
-    border-bottom: 1px solid #e0e0e0;
+.section-header h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
 }
 
-.split-items th {
-    background-color: #f9f9f9;
-    font-weight: 700;
+.friends-section {
+  margin-bottom: 2rem;
 }
 
-.totals {
-    background-color: #e3f2fd; /* Consistent background color */
-    border-radius: 8px;
-    padding: 15px;
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
 }
 
-.totals ul {
-    list-style-type: none;
-    padding: 0;
+.friend-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(0, 184, 148, 0.05);
+  border: 1px solid rgba(0, 184, 148, 0.1);
+  border-radius: 12px;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
-.totals li {
-    margin-bottom: 5px;
+.friend-card:hover {
+  background: rgba(0, 184, 148, 0.08);
+  border-color: rgba(0, 184, 148, 0.2);
+  transform: translate3d(0, -1px, 0);
+}
+
+.friend-avatar {
+  background: rgba(0, 184, 148, 0.1);
+  color: #00b894;
+  padding: 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.friend-input {
+  flex: 1;
+  margin: 0;
+}
+
+.remove-friend {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.items-section {
+  margin-bottom: 2rem;
+}
+
+.items-split-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.item-split-card {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.item-split-card:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(102, 126, 234, 0.2);
+  transform: translate3d(0, -1px, 0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.item-header {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.item-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+.item-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+}
+
+.split-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.split-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666;
+}
+
+.friend-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.friend-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(102, 126, 234, 0.05);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.friend-checkbox:hover {
+  background: rgba(102, 126, 234, 0.1);
+  border-color: rgba(102, 126, 234, 0.2);
+}
+
+.friend-checkbox.checked {
+  background: rgba(0, 184, 148, 0.1);
+  border-color: rgba(0, 184, 148, 0.3);
+  color: #00b894;
+}
+
+.friend-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox-custom {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.friend-checkbox.checked .checkbox-custom {
+  background: #00b894;
+  border-color: #00b894;
+  color: white;
+}
+
+.checkbox-custom svg {
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s ease;
+}
+
+.friend-checkbox.checked .checkbox-custom svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.friend-checkbox span {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.totals-section {
+  border-top: 1px solid rgba(102, 126, 234, 0.1);
+  padding-top: 1.5rem;
+}
+
+.totals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.total-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 12px;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.total-card:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+  border-color: rgba(102, 126, 234, 0.3);
+  transform: translate3d(0, -1px, 0);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+}
+
+.total-avatar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.total-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.total-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+  margin-bottom: 0.125rem;
+}
+
+.total-amount {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .split-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .friends-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .friend-checkboxes {
+    flex-direction: column;
+  }
+  
+  .friend-checkbox {
+    justify-content: flex-start;
+  }
+  
+  .item-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .totals-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .split-items {
+    margin-top: 1rem;
+  }
+  
+  .item-split-card {
+    padding: 1rem;
+  }
+  
+  .friend-card {
+    padding: 0.75rem;
+  }
+  
+  .total-card {
+    padding: 0.75rem 1rem;
+  }
+  
+  .friend-checkboxes {
+    gap: 0.375rem;
+  }
+  
+  .friend-checkbox {
+    padding: 0.375rem 0.625rem;
+    font-size: 0.8rem;
+  }
 }

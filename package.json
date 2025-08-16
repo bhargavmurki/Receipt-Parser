@@ -14,15 +14,14 @@
     "mongoose": "^8.6.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-scripts": "^3.0.1",
+    "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start --openssl-legacy-provider",
     "build": "react-scripts build --openssl-legacy-provider",
     "test": "react-scripts test --openssl-legacy-provider",
-    "eject": "react-scripts eject",
-    "prepare": "husky"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

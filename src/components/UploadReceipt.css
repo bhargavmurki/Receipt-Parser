@@ -1,53 +1,227 @@
-/* src/components/UploadReceipt.css */
+/* Upload Receipt Component Styles */
 
 .upload-receipt {
-    background-color: #ffffff; /* White background for a clean look */
-    border-radius: 8px; /* Consistent border radius for all containers */
-    padding: 24px; /* Consistent padding */
-    margin-bottom: 40px; /* Consistent margin for separation */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-    max-width: 800px; /* Maximum width for better readability */
-    margin-left: auto; /* Center align horizontally */
-    margin-right: auto; /* Center align horizontally */
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.upload-container {
-    display: flex;
-    align-items: center; /* Center align items vertically */
-    gap: 16px; /* Consistent spacing between items */
-    margin-top: 16px; /* Consistent margin from top */
+.upload-header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
-.upload-container input[type="file"] {
-    flex: 1; /* Flex-grow to fill available space */
-    padding: 12px; /* Consistent padding */
-    border: 1px solid #ddd; /* Light border for clarity */
-    border-radius: 6px; /* Slightly rounded corners for consistency */
-    font-size: 16px; /* Consistent font size */
-}
- 
-.upload-container button {
-    padding: 12px 20px; /* Consistent button padding */
-    border: none;
-    border-radius: 6px; /* Matching border radius */
-    background-color: #0073ff; /* Primary button color */
-    color: #ffffff; /* White text for contrast */
-    cursor: pointer;
-    font-size: 16px; /* Consistent font size */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
+.upload-icon {
+  color: #667eea;
+  margin-bottom: 1rem;
 }
 
-.upload-container button:hover {
-    background-color: #0056b3; /* Darker color for hover */
-    transform: scale(1.05); /* Slight scale effect on hover */
+.upload-header h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
 }
 
-.error-message {
-    color: #dc3545; /* Consistent error color */
-    font-size: 14px; /* Slightly smaller font size for error messages */
-    margin-top: 12px; /* Consistent margin for spacing */
+.upload-header p {
+  color: #666;
+  font-size: 1rem;
 }
 
-.receipt-content {
-    margin-top: 24px; /* Consistent margin for separation from elements above */
+.upload-zone {
+  border: 2px dashed rgba(102, 126, 234, 0.3);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  background: rgba(102, 126, 234, 0.02);
+  margin-bottom: 1.5rem;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.upload-zone:hover {
+  border-color: rgba(102, 126, 234, 0.5);
+  background: rgba(102, 126, 234, 0.05);
+  transform: translate3d(0, -1px, 0);
+}
+
+.upload-zone.drag-over {
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  transform: scale(1.02);
+}
+
+.upload-zone.has-file {
+  border-color: rgba(0, 184, 148, 0.5);
+  background: rgba(0, 184, 148, 0.05);
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.upload-placeholder svg {
+  color: rgba(102, 126, 234, 0.6);
+}
+
+.upload-placeholder h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.upload-placeholder p {
+  color: #666;
+  margin: 0;
+}
+
+.supported-formats {
+  font-size: 0.85rem;
+  color: #999;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  margin-top: 0.5rem;
+}
+
+.file-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 184, 148, 0.1);
+  border: 1px solid rgba(0, 184, 148, 0.2);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin: 0 auto;
+  max-width: 400px;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.file-info svg {
+  color: #00b894;
+}
+
+.file-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.file-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.file-size {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.remove-file {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.upload-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.receipt-results {
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Alert styles specific to upload */
+.upload-receipt .alert {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.upload-receipt .alert svg {
+  flex-shrink: 0;
+}
+
+/* Loading state */
+.upload-receipt .btn:disabled {
+  cursor: not-allowed;
+}
+
+.upload-receipt .spinner {
+  width: 16px;
+  height: 16px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .upload-zone {
+    padding: 2rem 1rem;
+  }
+  
+  .upload-placeholder h3 {
+    font-size: 1.1rem;
+  }
+  
+  .upload-placeholder svg {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .file-preview {
+    padding: 0.75rem 1rem;
+    margin: 0;
+  }
+  
+  .file-info {
+    gap: 0.75rem;
+  }
+  
+  .file-info svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .upload-zone {
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .upload-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .upload-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .upload-placeholder svg {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .receipt-results {
+    gap: 1.5rem;
+  }
 }
