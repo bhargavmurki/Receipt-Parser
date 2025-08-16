@@ -1,9 +1,5 @@
 # environment files
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
 # build and production
 /build
@@ -25,3 +21,8 @@ yarn-error.log*
 .DS_Store
 
 # misc
+SECURITY.md
+STRUCT.md
+*.db
+.idea/
+backend/.env

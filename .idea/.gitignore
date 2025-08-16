@@ -2,4 +2,5 @@
 /shelf/
 /workspace.xml
 # Editor-based HTTP Client requests
+.env
 /httpRequests/

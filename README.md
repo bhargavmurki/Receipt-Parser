@@ -1,70 +1,184 @@
-# Getting Started with Create React App
+# Receipt Parser
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A smart receipt analysis and bill splitting application that uses Azure Form Recognizer to extract data from receipt images and provides an intuitive interface for managing and splitting expenses.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Receipt Upload & Analysis**: Upload receipt images and automatically extract item details, prices, and totals using Azure AI
+- **Smart Data Extraction**: Leverages Azure Form Recognizer for accurate text and data extraction from receipts
+- **Bill Splitting**: Split receipt items among multiple people for easy expense sharing
+- **Receipt Management**: View, manage, and delete processed receipts
+- **Real-time Processing**: Fast receipt processing with immediate feedback
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Frontend
+- **React 18** - Modern React with hooks
+- **Axios** - HTTP client for API communication
+- **CSS3** - Custom styling with responsive design
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Backend
+- **Node.js & Express** - RESTful API server
+- **Azure Form Recognizer** - AI-powered document analysis
+- **NeDB** - Local database for data storage
+- **UUID** - Unique identifier generation
 
-### `npm test`
+## Project Structure
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+receipt-parser/
+├── src/                    # React frontend
+│   ├── components/         # React components
+│   │   ├── UploadReceipt.js    # Receipt upload interface
+│   │   ├── ReceiptList.js      # Display all receipts
+│   │   ├── ReceiptDisplay.js   # Individual receipt view
+│   │   ├── SplitItems.js       # Bill splitting functionality
+│   │   ├── ConfirmModal.js     # Confirmation dialogs
+│   │   └── Loading.js          # Loading component
+│   └── App.js             # Main application component
+├── backend/               # Node.js backend
+│   ├── config/            # Configuration files
+│   │   ├── azureClient.js      # Azure Form Recognizer setup
+│   │   └── config.js           # Environment configuration
+│   ├── controllers/       # Request handlers
+│   ├── services/          # Business logic
+│   ├── models/           # Data models & NeDB setup
+│   │   ├── db.js              # NeDB database connection
+│   │   └── receipts.db        # Local database file
+│   ├── routes/           # API routes
+│   ├── scripts/          # Utility scripts
+│   │   ├── admin-server.js     # Admin web interface
+│   │   └── view-db.js          # Database viewer script
+│   └── utils/            # Utility functions
+└── package.json          # Project dependencies
+```
 
-### `npm run build`
+## Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js (v14 or higher)
+- npm or yarn
+- Azure Form Recognizer account
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Installation
 
-### `npm run eject`
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd receipt-parser
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. **Install dependencies**
+   ```bash
+   # Install frontend dependencies
+   npm install
+   
+   # Install backend dependencies
+   cd backend
+   npm install
+   cd ..
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. **Environment Setup**
+   
+   Create a `.env` file in the `backend` directory:
+   ```env
+   # Azure Form Recognizer
+   AZURE_ENDPOINT=your_azure_endpoint
+   AZURE_API_KEY=your_azure_key
+   
+   # Server Configuration
+   PORT=5002
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+4. **Start the development servers**
+   
+   Terminal 1 (Backend):
+   ```bash
+   cd backend
+   npm start
+   ```
+   
+   Terminal 2 (Frontend):
+   ```bash
+   npm start
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   The application will open at `http://localhost:3000`
 
-## Learn More
+## Usage
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. **Upload a Receipt**: Click the upload area or drag and drop a receipt image
+2. **Processing**: The app will automatically process the image using Azure AI
+3. **Review Data**: Check the extracted items, prices, and total
+4. **Split Bill**: Use the splitting feature to divide costs among multiple people
+5. **Manage Receipts**: View all processed receipts in the dashboard
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Admin Interface
 
-### Code Splitting
+Access the database admin interface to manage receipts:
+1. Start the admin server: `node backend/scripts/admin-server.js`
+2. Visit `http://localhost:3001`
+3. Click "Load Receipts" to view all stored receipts
+4. Delete receipts directly from the interface
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## API Endpoints
 
-### Analyzing the Bundle Size
+- `POST /receipts` - Upload and process a new receipt
+- `GET /receipts` - Retrieve all processed receipts  
+- `DELETE /receipts/:id` - Delete a specific receipt
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Configuration
 
-### Making a Progressive Web App
+The application supports various configuration options:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- **Azure Form Recognizer**: Required for receipt text extraction
+- **Local Database**: NeDB for data storage and management
 
-### Advanced Configuration
+## Development
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Available Scripts
 
-### Deployment
+**Frontend:**
+- `npm start` - Start development server
+- `npm test` - Run tests
+- `npm run build` - Build for production
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+**Backend:**
+- `npm start` - Start the API server
+- `node scripts/view-db.js` - View local database contents
+- `node scripts/admin-server.js` - Start admin interface (http://localhost:3001)
 
-### `npm run build` fails to minify
+### Building for Production
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+# Build frontend
+npm run build
+
+# The build folder will contain the production-ready files
+```
+
+## Troubleshooting
+
+- **Azure API Issues**: Verify your Azure Form Recognizer credentials and endpoint
+- **CORS Errors**: Ensure the backend server is running on the correct port
+- **Image Upload Fails**: Check image format (supports JPEG, PNG, GIF, BMP)
+- **Node.js Issues**: Try using the `--openssl-legacy-provider` flag for older Node versions
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+This project is licensed under the ISC License.
+
+## Support
+
+For issues and questions, please check the troubleshooting section or create an issue in the repository.
