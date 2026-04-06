@@ -1,5 +1,25 @@
 import Foundation
 
+private enum ReceiptDateParser {
+    static let iso8601: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        return formatter
+    }()
+
+    static let plainDate: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
+
+    static func parse(_ rawValue: String) -> Date? {
+        iso8601.date(from: rawValue) ?? plainDate.date(from: rawValue)
+    }
+}
+
 struct User: Codable, Equatable, Hashable {
     let id: String?
     let email: String?
@@ -126,8 +146,7 @@ struct ReceiptDraft: Identifiable, Equatable, Hashable {
         taxAmount = receipt.taxAmount
         items = receipt.items
 
-        let formatter = ISO8601DateFormatter()
-        date = formatter.date(from: receipt.date) ?? Date()
+        date = ReceiptDateParser.parse(receipt.date) ?? Date()
     }
 
     static func == (lhs: ReceiptDraft, rhs: ReceiptDraft) -> Bool {

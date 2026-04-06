@@ -32,6 +32,7 @@ Receipt Parser extracts receipt data with Azure AI and helps split items across 
    AZURE_API_KEY=your-azure-form-recognizer-api-key
    PORT=5002
    NODE_ENV=development
+   ENABLE_DEV_LOGIN=true
    FRONTEND_URL=http://localhost:3000
    BACKEND_URL=http://localhost:5002
    ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
@@ -84,7 +85,7 @@ Then in the app:
 2. tap `Save Backend URL`
 3. tap `Continue Locally`
 
-`Continue Locally` uses the development-only endpoint `POST /api/auth/dev-login`.
+`Continue Locally` uses the development-only endpoint `POST /api/auth/dev-login`. Enable it explicitly with `ENABLE_DEV_LOGIN=true` in `backend/.env`.
 
 ## Main Endpoints
 

@@ -2,6 +2,11 @@ const authService = require('../services/authService');
 const { blacklistToken } = require('../middleware/auth');
 const { validateEmail, validatePassword, validateName } = require('../middleware/validation');
 
+const isDevelopmentLoginEnabled = () => (
+    process.env.NODE_ENV !== 'production' &&
+    process.env.ENABLE_DEV_LOGIN === 'true'
+);
+
 const register = async (req, res) => {
     try {
         const { email, password, name } = req.body;
@@ -94,7 +99,7 @@ const login = async (req, res) => {
 };
 
 const devLogin = async (req, res) => {
-    if (process.env.NODE_ENV === 'production') {
+    if (!isDevelopmentLoginEnabled()) {
         return res.status(404).json({
             error: 'Not found',
             code: 'NOT_FOUND'
