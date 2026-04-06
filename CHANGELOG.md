@@ -7,7 +7,6 @@ All notable changes to the Receipt Parser project will be documented in this fil
 ### 🔒 Security Enhancements
 - **BREAKING**: Added mandatory authentication for all receipt operations
 - **NEW**: JWT-based authentication with 7-day token expiration
-- **NEW**: Google OAuth2 integration with Passport.js
 - **NEW**: User data isolation - users can only access their own receipts
 - **NEW**: Account lockout protection (5 failed attempts = 30-minute lockout)
 - **NEW**: Token blacklisting for secure logout
@@ -15,7 +14,6 @@ All notable changes to the Receipt Parser project will be documented in this fil
 - **NEW**: Rate limiting for all endpoints (configurable)
 - **NEW**: CORS protection with origin whitelisting
 - **NEW**: Comprehensive input validation and sanitization
-- **NEW**: Secure session management for OAuth flows
 
 ### 🏗️ Architecture Improvements
 - **NEW**: Modular middleware system (auth, CORS, rate limiting, validation)
@@ -101,8 +99,6 @@ All notable changes to the Receipt Parser project will be documented in this fil
 - **Added**: helmet (security headers)
 - **Added**: express-rate-limit (rate limiting)
 - **Added**: compression (request compression)
-- **Added**: passport (OAuth authentication)
-- **Added**: passport-google-oauth20 (Google OAuth)
 - **Updated**: bcryptjs (password hashing)
 - **Updated**: jsonwebtoken (JWT handling)
 - **Removed**: body-parser (replaced with express built-in)
@@ -157,13 +153,8 @@ cp backend/models/receipts.db backend/models/receipts.db.backup
 ```bash
 # Add these new required variables to your .env file:
 JWT_SECRET=your-super-strong-jwt-secret-at-least-64-characters
-SESSION_SECRET=your-session-secret-32-characters-minimum
 FRONTEND_URL=http://localhost:3000
 ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
-
-# Optional Google OAuth:
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```
 
 ### API Changes
@@ -189,7 +180,7 @@ GET /health                 # Health check
 
 ### Security Notes
 - **Action Required**: Regenerate any Azure API keys if they were previously committed
-- **Action Required**: Set strong JWT and session secrets
+- **Action Required**: Set a strong JWT secret
 - **Recommended**: Review and update CORS origins for production
 - **Recommended**: Configure rate limiting for your use case
 
@@ -205,7 +196,6 @@ GET /health                 # Health check
 - **Medium**: Added comprehensive input validation
 - **Medium**: Secured error handling to prevent information disclosure
 - **Low**: Added security headers with Helmet.js
-- **Low**: Implemented secure session management
 
 ### Security Recommendations
 1. **Immediate**: Update to 2.0.0 for critical security fixes

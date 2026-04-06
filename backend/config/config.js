@@ -17,10 +17,8 @@ const cfg = {
     azureEndpoint: process.env.AZURE_ENDPOINT,
     azureApiKey: process.env.AZURE_API_KEY,
     jwtSecret: process.env.JWT_SECRET || generateSecretKey(),
-    sessionSecret: process.env.SESSION_SECRET || (process.env.NODE_ENV === 'production' ? null : crypto.randomBytes(32).toString('hex')),
     frontendUrl: process.env.FRONTEND_URL,
     backendUrl: process.env.BACKEND_URL,
-    googleCallbackUrl: process.env.GOOGLE_CALLBACK_URL,
     appleAudience: process.env.APPLE_AUDIENCE || process.env.APPLE_BUNDLE_ID,
     trustProxy: process.env.TRUST_PROXY ? parseInt(process.env.TRUST_PROXY, 10) : 1,
     // Rate limiting
@@ -51,9 +49,6 @@ function validateConfig() {
         if (!process.env.JWT_SECRET) {
             problems.push('JWT_SECRET must be explicitly set in production');
         }
-        if (!cfg.sessionSecret) {
-            problems.push('SESSION_SECRET is required in production');
-        }
         if (!cfg.frontendUrl) {
             problems.push('FRONTEND_URL must be set in production for CORS');
         }
@@ -80,10 +75,8 @@ function validateConfig() {
         AZURE_ENDPOINT: cfg.azureEndpoint || 'NOT SET',
         AZURE_API_KEY: mask(cfg.azureApiKey),
         JWT_SECRET: mask(cfg.jwtSecret),
-        SESSION_SECRET: mask(cfg.sessionSecret),
         FRONTEND_URL: cfg.frontendUrl || 'NOT SET',
         BACKEND_URL: cfg.backendUrl || 'NOT SET',
-        GOOGLE_CALLBACK_URL: cfg.googleCallbackUrl || 'NOT SET',
         APPLE_AUDIENCE: cfg.appleAudience || 'NOT SET',
         TRUST_PROXY: cfg.trustProxy,
         MAX_FILE_SIZE: `${cfg.maxFileSize / 1024 / 1024}MB`,

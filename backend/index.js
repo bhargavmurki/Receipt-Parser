@@ -2,14 +2,11 @@ const express = require('express');
 const helmet = require('helmet');
 const compression = require('compression');
 const cors = require('cors');
-const session = require('express-session');
-const passport = require('./config/passport');
-const { port, sessionSecret, validateConfig, nodeEnv, maxBodySize, trustProxy } = require('./config/config');
+const { port, validateConfig, nodeEnv, maxBodySize, trustProxy } = require('./config/config');
 const corsConfig = require('./middleware/cors');
 const { generalLimiter } = require('./middleware/rateLimiter');
 const receiptRoutes = require('./routes/receiptRoutes');
 const authRoutes = require('./routes/authRoutes');
-const googleAuthRoutes = require('./routes/googleAuthRoutes');
 const { initializeDatabases, healthCheck } = require('./models/index');
 const { httpLogger, info, error: logError } = require('./utils/logger');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
@@ -63,24 +60,6 @@ app.use(express.urlencoded({
     parameterLimit: 1000
 }));
 
-// Session middleware for OAuth
-app.use(session({
-    secret: sessionSecret,
-    resave: false,
-    saveUninitialized: false,
-    name: 'sessionId', // Don't use default session name
-    cookie: {
-        maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        secure: nodeEnv === 'production', // HTTPS only in production
-        httpOnly: true, // Prevent XSS
-        sameSite: nodeEnv === 'production' ? 'strict' : 'lax' // CSRF protection
-    }
-}));
-
-// Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
-
 // Health check endpoint
 app.get('/health', async (req, res) => {
     try {
@@ -104,7 +83,6 @@ app.get('/health', async (req, res) => {
 
 // API Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/auth', googleAuthRoutes);
 app.use('/api', receiptRoutes);
 
 // 404 handler for undefined routes

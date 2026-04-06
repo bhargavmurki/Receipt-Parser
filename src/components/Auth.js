@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import GoogleLogin from './GoogleLogin';
 import './Auth.css';
 
 const Auth = () => {
@@ -74,29 +73,6 @@ const Auth = () => {
 
             {error && <div className="error-message">{error}</div>}
             {success && <div className="success-message">{success}</div>}
-
-            <GoogleLogin />
-
-            <div style={{ 
-                textAlign: 'center', 
-                margin: '1rem 0',
-                position: 'relative'
-            }}>
-                <hr style={{ border: 'none', borderTop: '1px solid #e9ecef' }} />
-                <span style={{
-                    position: 'absolute',
-                    top: '-0.75rem',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    background: 'white',
-                    padding: '0 1rem',
-                    color: '#7f8c8d',
-                    fontSize: '0.9rem'
-                }}>
-                    or
-                </span>
-            </div>
-
             <form onSubmit={handleSubmit} className="auth-form">
                 {!isLogin && (
                     <div className="form-group">
