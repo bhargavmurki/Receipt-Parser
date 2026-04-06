@@ -1,0 +1,401 @@
+/* Professional Dashboard Component Styles */
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.dashboard-header h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.025em;
+}
+
+.dashboard-header p {
+  color: #6b7280;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Empty State */
+.dashboard-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #6b7280;
+}
+
+.empty-icon {
+  color: #d1d5db;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-empty h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.025em;
+}
+
+.dashboard-empty p {
+  font-size: 0.875rem;
+  margin: 0;
+  color: #6b7280;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.15s ease;
+}
+
+.stat-card:hover {
+  background: #fafbfc;
+  border-color: #d1d5db;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stat-icon {
+  background: #eff6ff;
+  color: #3b82f6;
+  padding: 0.75rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.dashboard-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.15s ease;
+}
+
+.dashboard-card:hover {
+  background: #fafbfc;
+  border-color: #d1d5db;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.card-header h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 0.25rem 0;
+  letter-spacing: -0.025em;
+}
+
+.card-header p {
+  color: #6b7280;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Categories */
+.categories-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.category-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.category-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 0.125rem;
+}
+
+.category-amount {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.category-bar {
+  flex: 2;
+  background: #f3f4f6;
+  border-radius: 6px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.category-progress {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.category-percentage {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #3b82f6;
+  min-width: 35px;
+  text-align: right;
+}
+
+/* Activity */
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #f3f4f6;
+  transition: all 0.15s ease;
+}
+
+.activity-item:hover {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+}
+
+.activity-icon {
+  background: #eff6ff;
+  color: #3b82f6;
+  padding: 0.5rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.activity-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 0.125rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-date {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.activity-amount {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #3b82f6;
+  text-align: right;
+}
+
+/* Monthly Chart */
+.monthly-card {
+  grid-column: 1 / -1;
+}
+
+.monthly-chart {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  justify-content: space-between;
+  height: 200px;
+  padding: 1rem 0;
+}
+
+.chart-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  max-width: 80px;
+}
+
+.bar-container {
+  height: 120px;
+  width: 100%;
+  display: flex;
+  align-items: end;
+  margin-bottom: 0.5rem;
+}
+
+.bar {
+  width: 100%;
+  background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 4px 4px 0 0;
+  min-height: 4px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.bar:hover {
+  background: linear-gradient(180deg, #2563eb 0%, #1e40af 100%);
+  transform: scaleY(1.05);
+}
+
+.bar-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.bar-amount {
+  font-size: 0.625rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard {
+    gap: 1rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .stat-card {
+    padding: 1.25rem;
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .dashboard-card {
+    padding: 1.25rem;
+  }
+  
+  .category-item {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .category-bar {
+    flex: none;
+    width: 100%;
+    order: 3;
+  }
+  
+  .category-percentage {
+    order: 2;
+    min-width: auto;
+  }
+  
+  .monthly-chart {
+    height: 150px;
+    gap: 0.5rem;
+  }
+  
+  .bar-container {
+    height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .stat-value {
+    font-size: 1.25rem;
+  }
+  
+  .activity-item {
+    padding: 0.625rem;
+  }
+  
+  .monthly-chart {
+    height: 120px;
+    padding: 0.5rem 0;
+  }
+  
+  .bar-container {
+    height: 60px;
+  }
+  
+  .chart-bar {
+    max-width: 60px;
+  }
+  
+  .bar-amount {
+    display: none;
+  }
+}

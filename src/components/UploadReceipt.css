@@ -1,61 +1,60 @@
-/* Upload Receipt Component Styles */
+/* Professional Upload Receipt Component Styles */
 
 .upload-receipt {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .upload-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .upload-icon {
-  color: #667eea;
+  color: #6b7280;
   margin-bottom: 1rem;
 }
 
 .upload-header h2 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #333;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
   margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
 }
 
 .upload-header p {
-  color: #666;
-  font-size: 1rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 400;
 }
 
 .upload-zone {
-  border: 2px dashed rgba(102, 126, 234, 0.3);
-  border-radius: 16px;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
   padding: 3rem 2rem;
   text-align: center;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
-  background: rgba(102, 126, 234, 0.02);
+  transition: all 0.15s ease;
+  background: #fafbfc;
   margin-bottom: 1.5rem;
-  will-change: transform;
-  transform: translateZ(0);
 }
 
 .upload-zone:hover {
-  border-color: rgba(102, 126, 234, 0.5);
-  background: rgba(102, 126, 234, 0.05);
-  transform: translate3d(0, -1px, 0);
+  border-color: #9ca3af;
+  background: #f9fafb;
 }
 
 .upload-zone.drag-over {
-  border-color: #667eea;
-  background: rgba(102, 126, 234, 0.1);
-  transform: scale(1.02);
+  border-color: #3b82f6;
+  background: #eff6ff;
+  border-style: solid;
 }
 
 .upload-zone.has-file {
-  border-color: rgba(0, 184, 148, 0.5);
-  background: rgba(0, 184, 148, 0.05);
+  border-color: #059669;
+  background: #f0fdf4;
 }
 
 .upload-placeholder {
@@ -66,38 +65,40 @@
 }
 
 .upload-placeholder svg {
-  color: rgba(102, 126, 234, 0.6);
+  color: #9ca3af;
 }
 
 .upload-placeholder h3 {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  color: #333;
+  color: #374151;
   margin: 0;
 }
 
 .upload-placeholder p {
-  color: #666;
+  color: #6b7280;
   margin: 0;
+  font-size: 0.875rem;
 }
 
 .supported-formats {
-  font-size: 0.85rem;
-  color: #999;
-  background: rgba(102, 126, 234, 0.1);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
+  font-size: 0.75rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
   margin-top: 0.5rem;
+  border: 1px solid #e5e7eb;
 }
 
 .file-preview {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(0, 184, 148, 0.1);
-  border: 1px solid rgba(0, 184, 148, 0.2);
-  border-radius: 12px;
-  padding: 1rem 1.5rem;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
   margin: 0 auto;
   max-width: 400px;
 }
@@ -105,11 +106,11 @@
 .file-info {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .file-info svg {
-  color: #00b894;
+  color: #059669;
 }
 
 .file-details {
@@ -118,49 +119,61 @@
 }
 
 .file-name {
-  font-weight: 600;
-  color: #333;
-  font-size: 0.95rem;
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.875rem;
 }
 
 .file-size {
-  font-size: 0.8rem;
-  color: #666;
+  font-size: 0.75rem;
+  color: #6b7280;
 }
 
 .remove-file {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1rem;
+  font-weight: 500;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #6b7280;
+  transition: all 0.15s ease;
+}
+
+.remove-file:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  color: #374151;
 }
 
 .upload-actions {
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .receipt-results {
   display: grid;
-  gap: 2rem;
-  margin-top: 2rem;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 /* Alert styles specific to upload */
 .upload-receipt .alert {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .upload-receipt .alert svg {
   flex-shrink: 0;
+  width: 16px;
+  height: 16px;
 }
 
 /* Loading state */
@@ -180,7 +193,7 @@
   }
   
   .upload-placeholder h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   
   .upload-placeholder svg {
@@ -189,31 +202,37 @@
   }
   
   .file-preview {
-    padding: 0.75rem 1rem;
+    padding: 0.625rem 0.75rem;
     margin: 0;
+    max-width: none;
   }
   
   .file-info {
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
   
   .file-info svg {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .upload-actions {
+    flex-direction: column;
+    gap: 0.5rem;
   }
 }
 
 @media (max-width: 480px) {
   .upload-zone {
-    padding: 1.5rem 0.75rem;
+    padding: 1.5rem 1rem;
   }
   
   .upload-header {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
   
   .upload-header h2 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
   
   .upload-placeholder svg {
@@ -222,6 +241,10 @@
   }
   
   .receipt-results {
-    gap: 1.5rem;
+    gap: 1rem;
+  }
+
+  .upload-receipt {
+    gap: 1rem;
   }
 }

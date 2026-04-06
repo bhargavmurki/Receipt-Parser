@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { api } from '../utils/api';
 import ReceiptDisplay from './ReceiptDisplay';
 import SplitItems from './SplitItems';
 import Loading from './Loading';
 import ConfirmModal from './ConfirmModal';
 import './ReceiptList.css';
-
-const API_PORT = process.env.REACT_APP_API_PORT || 5002;
-const API_URL = `http://localhost:${API_PORT}/receipts`;
 
 const ReceiptList = ({ receipts, setReceipts }) => {
     const [selectedReceipt, setSelectedReceipt] = useState(null);
@@ -30,16 +27,29 @@ const ReceiptList = ({ receipts, setReceipts }) => {
             setError('Invalid receipt ID.');
             return;
         }
+        
+        setIsLoading(true);
         try {
-            await axios.delete(`${API_URL}/${receiptToDelete.id}`);
+            await api.receipts.delete(receiptToDelete.id);
             setReceipts(receipts.filter(r => r.id !== receiptToDelete.id));
             if (selectedReceipt && selectedReceipt.id === receiptToDelete.id) {
                 setSelectedReceipt(null);
             }
+            setError(null); // Clear any previous errors
         } catch (error) {
             console.error('Error deleting receipt:', error);
-            setError('Failed to delete receipt. Please try again.');
+            
+            if (error.code === 'RECEIPT_NOT_FOUND' || error.status === 404) {
+                setError('Receipt not found or already deleted.');
+            } else if (error.code === 'AUTH_REQUIRED' || error.status === 401) {
+                setError('Authentication required. Please log in again.');
+            } else if (error.isNetworkError) {
+                setError('Network error. Please check your connection.');
+            } else {
+                setError(error.message || 'Failed to delete receipt. Please try again.');
+            }
         } finally {
+            setIsLoading(false);
             setIsDeleteModalOpen(false);
             setReceiptToDelete(null);
         }
@@ -130,6 +140,12 @@ const ReceiptList = ({ receipts, setReceipts }) => {
                                         <div className="summary-item">
                                             <span className="label">Tax</span>
                                             <span className="value">${receipt.taxAmount.toFixed(2)}</span>
+                                        </div>
+                                    )}
+                                    {!receipt.taxAmount && receipt.subtotal && receipt.total && (receipt.total - receipt.subtotal > 0.01) && (
+                                        <div className="summary-item">
+                                            <span className="label">Tax (est.)</span>
+                                            <span className="value">${(receipt.total - receipt.subtotal).toFixed(2)}</span>
                                         </div>
                                     )}
                                     <div className="summary-item">
