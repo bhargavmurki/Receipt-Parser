@@ -44,6 +44,12 @@ const ReceiptDisplay = ({ receipt }) => {
                             <span className="summary-value">${taxAmount.toFixed(2)}</span>
                         </div>
                     )}
+                    {!taxAmount && subtotal && receiptTotal && (receiptTotal - subtotal > 0.01) && (
+                        <div className="summary-item">
+                            <span className="summary-label">Tax (est.)</span>
+                            <span className="summary-value">${(receiptTotal - subtotal).toFixed(2)}</span>
+                        </div>
+                    )}
                     <div className="summary-item total">
                         <span className="summary-label">Total</span>
                         <span className="summary-value">${receiptTotal.toFixed(2)}</span>

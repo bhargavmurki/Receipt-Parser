@@ -1,12 +1,9 @@
 
 import React, { useState, useRef } from 'react';
-import axios from 'axios';
+import { api } from '../utils/api';
 import ReceiptDisplay from './ReceiptDisplay';
 import SplitItems from './SplitItems';
 import './UploadReceipt.css';
-
-const API_PORT = process.env.REACT_APP_API_PORT || 5002;
-const API_URL = `http://localhost:${API_PORT}/process-receipt`;
 
 const UploadReceipt = ({ onUploadSuccess }) => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -15,7 +12,6 @@ const UploadReceipt = ({ onUploadSuccess }) => {
     const [error, setError] = useState(null);
     const [isDragOver, setIsDragOver] = useState(false);
     const fileInputRef = useRef(null);
-    const [uploadProgress, setUploadProgress] = useState(0);
 
     const validateFile = (file) => {
         if (!file.type.startsWith('image/')) {
@@ -23,8 +19,8 @@ const UploadReceipt = ({ onUploadSuccess }) => {
             return false;
         }
         
-        if (file.size > 4 * 1024 * 1024) {
-            setError('Image file is too large. Please select an image smaller than 4MB.');
+        if (file.size > 10 * 1024 * 1024) {
+            setError('Image file is too large. Please select an image smaller than 10MB.');
             return false;
         }
         
@@ -87,31 +83,31 @@ const UploadReceipt = ({ onUploadSuccess }) => {
             console.log('File type:', selectedFile.type);
             console.log('Base64 length:', base64String.length);
             try {
-                const response = await axios.post(API_URL, {
-                    image: base64String
-                });
-                console.log('Receipt response:', response.data);
-                setReceipt(response.data);
-                onUploadSuccess(response.data);
+                const response = await api.receipts.process(base64String);
+                console.log('Receipt processed successfully:', response);
+                
+                // Handle the new response format
+                const receiptData = response.receipt || response.data || response;
+                setReceipt(receiptData);
+                onUploadSuccess(receiptData);
             } catch (error) {
                 console.error('Error uploading receipt:', error);
                 
-                // Better error messages based on response
-                if (error.response) {
-                    const { status, data } = error.response;
-                    if (status === 400) {
-                        setError(data.error || 'Invalid image file. Please try a different image.');
-                    } else if (status === 422) {
-                        setError('Could not extract receipt data from this image. Please try a clearer photo.');
-                    } else if (status === 503) {
-                        setError('Receipt analysis service is unavailable. Please try again later.');
-                    } else {
-                        setError('Server error. Please try again.');
-                    }
-                } else if (error.request) {
-                    setError('Cannot connect to server. Please check your connection.');
+                // Enhanced error handling with new error codes
+                if (error.code === 'INVALID_IMAGE' || error.code === 'INVALID_IMAGE_FORMAT') {
+                    setError('Invalid image file. Please upload a clear JPEG, PNG, GIF, BMP, or WEBP image.');
+                } else if (error.code === 'EXTRACTION_FAILED') {
+                    setError('Could not extract receipt data from this image. Please ensure the image is clear and contains a valid receipt.');
+                } else if (error.code === 'SERVICE_UNAVAILABLE' || error.code === 'AZURE_QUOTA_EXCEEDED') {
+                    setError('Receipt analysis service is temporarily unavailable. Please try again later.');
+                } else if (error.code === 'QUOTA_EXCEEDED' || error.status === 429) {
+                    setError('Too many requests. Please wait a moment before trying again.');
+                } else if (error.isNetworkError) {
+                    setError('Cannot connect to server. Please check your internet connection.');
+                } else if (error.code === 'AUTH_REQUIRED' || error.status === 401) {
+                    setError('Authentication required. Please log in again.');
                 } else {
-                    setError('Failed to process the receipt. Please try again.');
+                    setError(error.message || 'Failed to process the receipt. Please try again.');
                 }
             } finally {
                 setIsLoading(false);
@@ -177,7 +173,7 @@ const UploadReceipt = ({ onUploadSuccess }) => {
                             </svg>
                             <h3>Drop your receipt here</h3>
                             <p>or click to browse files</p>
-                            <span className="supported-formats">Supports: JPEG, PNG (max 4MB)</span>
+                            <span className="supported-formats">Supports: JPEG, PNG, GIF, BMP, WEBP (max 10MB)</span>
                         </div>
                     )}
                 </div>

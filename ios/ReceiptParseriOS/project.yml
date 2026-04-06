@@ -1,0 +1,39 @@
+name: ReceiptParseriOS
+options:
+  minimumXcodeGenVersion: 2.38.0
+settings:
+  base:
+    PRODUCT_BUNDLE_IDENTIFIER: com.bhargavmurki.receiptparser
+    SWIFT_VERSION: 5.10
+    IPHONEOS_DEPLOYMENT_TARGET: 17.0
+    DEVELOPMENT_TEAM: ""
+targets:
+  ReceiptParseriOS:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - ReceiptParserApp
+    settings:
+      base:
+        PRODUCT_NAME: ReceiptParser
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Receipt Parser
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
+        INFOPLIST_KEY_UILaunchScreen_Generation: true
+        INFOPLIST_KEY_NSCameraUsageDescription: Scan paper receipts with your camera.
+        INFOPLIST_KEY_NSPhotoLibraryUsageDescription: Import saved receipt images from your photo library.
+        INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription: Save generated receipt summaries when sharing.
+        INFOPLIST_KEY_NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+          NSAllowsLocalNetworking: true
+        CODE_SIGN_STYLE: Automatic
+        SUPPORTS_MACCATALYST: false
+        TARGETED_DEVICE_FAMILY: 1
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        INFOPLIST_KEY_CFBundleURLTypes:
+          - CFBundleTypeRole: Editor
+            CFBundleURLSchemes:
+              - receiptparser
+    scheme:
+      testTargets: []

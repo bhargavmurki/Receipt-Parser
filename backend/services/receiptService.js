@@ -30,7 +30,16 @@ const analyzeReceipt = async (buffer) => {
         const merchantName = receipt.fields.MerchantName?.value ?? 'Unknown Merchant';
         const transactionDate = receipt.fields.TransactionDate?.value ?? new Date().toISOString().split('T')[0];
         const subtotal = receipt.fields.Subtotal?.value || null;
-        const taxAmount = receipt.fields.TaxAmount?.value || receipt.fields.Tax?.value || null;
+        
+        // Try multiple field names for tax amount
+        let taxAmount = receipt.fields.TaxAmount?.value || 
+                       receipt.fields.Tax?.value || 
+                       receipt.fields.TotalTax?.value ||
+                       receipt.fields.SalesTax?.value ||
+                       receipt.fields.VAT?.value ||
+                       null;
+        
+        console.log('Extracted tax amount:', taxAmount);
         let items = [];
 
         if (receipt.fields.Items && Array.isArray(receipt.fields.Items.values)) {
@@ -45,26 +54,69 @@ const analyzeReceipt = async (buffer) => {
 
         const receiptTotal = receipt.fields.Total?.value || 0;
         
-        // If no explicit tax amount found, try to calculate from total mismatch
+        // Calculate proper subtotal and tax relationship
         let finalTaxAmount = taxAmount;
         let finalSubtotal = subtotal;
+        let finalTotal = receiptTotal;
         
-        if (!finalTaxAmount && Math.abs(total - receiptTotal) > 0.01 && receiptTotal > 0) {
+        // Priority 1: If we have BOTH explicit subtotal AND tax from Azure, use them and calculate total
+        if (finalSubtotal && finalTaxAmount) {
+            finalTotal = Math.round((finalSubtotal + finalTaxAmount) * 100) / 100;
+            console.log(`Using explicit subtotal: ${finalSubtotal} and tax: ${finalTaxAmount}, calculated total: ${finalTotal}`);
+        }
+        // Priority 2: If we have explicit total and tax, calculate subtotal
+        else if (finalTaxAmount && receiptTotal > 0) {
+            finalSubtotal = Math.round((receiptTotal - finalTaxAmount) * 100) / 100;
+            finalTotal = receiptTotal;
+            console.log(`Using explicit tax: ${finalTaxAmount} and total: ${finalTotal}, calculated subtotal: ${finalSubtotal}`);
+        }
+        // Priority 3: If we have explicit total and subtotal, calculate tax
+        else if (finalSubtotal && receiptTotal > 0) {
+            finalTaxAmount = Math.round((receiptTotal - finalSubtotal) * 100) / 100;
+            finalTotal = receiptTotal;
+            console.log(`Using explicit subtotal: ${finalSubtotal} and total: ${finalTotal}, calculated tax: ${finalTaxAmount}`);
+        }
+        // If we don't have total but have subtotal/tax, calculate it
+        else if (!finalTotal && finalSubtotal && finalTaxAmount) {
+            finalTotal = Math.round((finalSubtotal + finalTaxAmount) * 100) / 100;
+            console.log(`No explicit total, calculated from subtotal + tax: ${finalTotal}`);
+        }
+        // If we only have one value, try to infer the others from item total
+        else if (receiptTotal > 0 && total > 0 && Math.abs(total - receiptTotal) > 0.01) {
             const difference = receiptTotal - total;
-            console.warn(`Total mismatch: calculated ${total}, receipt says ${receiptTotal}, difference: ${difference.toFixed(2)}`);
+            console.warn(`Total mismatch: items=${total}, receipt=${receiptTotal}, difference=${difference.toFixed(2)}`);
             
-            // If the difference is positive and reasonable (less than 50% of subtotal), assume it's tax
+            // If the difference is positive and reasonable, assume it's tax
             if (difference > 0 && difference < total * 0.5) {
                 finalTaxAmount = Math.round(difference * 100) / 100;
-                finalSubtotal = total;
-                console.log(`Inferred tax amount: ${finalTaxAmount}, subtotal: ${finalSubtotal}`);
+                finalSubtotal = Math.round(total * 100) / 100;
+                finalTotal = receiptTotal;
+                console.log(`Inferred from difference - subtotal: ${finalSubtotal}, tax: ${finalTaxAmount}, total: ${finalTotal}`);
+            }
+        }
+        // Try common tax rates if still no complete values
+        else if (!finalTotal && total > 0) {
+            // Use item total as baseline
+            finalSubtotal = Math.round(total * 100) / 100;
+            finalTotal = receiptTotal || total;
+            if (!finalTaxAmount && finalTotal > finalSubtotal) {
+                finalTaxAmount = Math.round((finalTotal - finalSubtotal) * 100) / 100;
+                console.log(`Using item total as subtotal: ${finalSubtotal}, calculated tax: ${finalTaxAmount}`);
+            }
+        }
+        
+        // Validate the relationship: subtotal + tax should equal total (within 1 cent)
+        if (finalSubtotal && finalTaxAmount) {
+            const calculatedTotal = finalSubtotal + finalTaxAmount;
+            if (Math.abs(calculatedTotal - finalTotal) > 0.01) {
+                console.warn(`Subtotal + Tax (${calculatedTotal.toFixed(2)}) doesn't match Total (${finalTotal.toFixed(2)})`);
             }
         }
 
         return { 
             merchantName, 
             transactionDate, 
-            total: receiptTotal || total, 
+            total: finalTotal, 
             subtotal: finalSubtotal,
             taxAmount: finalTaxAmount,
             items 
@@ -75,7 +127,7 @@ const analyzeReceipt = async (buffer) => {
     }
 };
 
-const saveReceipt = async (receiptData) => {
+const saveReceipt = async (receiptData, userId = null) => {
     try {
         // Validate receipt data before saving
         if (!receiptData || typeof receiptData !== 'object') {
@@ -84,8 +136,13 @@ const saveReceipt = async (receiptData) => {
 
         const { merchantName, transactionDate, total, subtotal, taxAmount, items } = receiptData;
 
-        if (!merchantName || !transactionDate) {
-            throw new Error('Missing required receipt fields: merchantName or transactionDate');
+        // Validate required fields
+        if (!merchantName || typeof merchantName !== 'string' || merchantName.trim().length === 0) {
+            throw new Error('Missing or invalid merchant name');
+        }
+
+        if (!transactionDate) {
+            throw new Error('Missing transaction date');
         }
 
         if (typeof total !== 'number' || total < 0) {
@@ -96,22 +153,55 @@ const saveReceipt = async (receiptData) => {
             throw new Error('Items must be an array');
         }
 
+        // Validate user ID
+        if (!userId || typeof userId !== 'string') {
+            throw new Error('Invalid user ID provided');
+        }
+
+        // Sanitize and validate merchant name
+        const sanitizedMerchantName = merchantName.trim().substring(0, 200); // Limit length
+        
+        // Validate amounts
+        const validatedTotal = Math.round(total * 100) / 100;
+        const validatedSubtotal = subtotal ? Math.round(subtotal * 100) / 100 : null;
+        const validatedTaxAmount = taxAmount ? Math.round(taxAmount * 100) / 100 : null;
+        
+        // Validate and sanitize items
+        const validatedItems = items
+            .filter(item => item !== null && typeof item === 'object')
+            .map(item => ({
+                description: (item.description || '').toString().trim().substring(0, 200),
+                quantity: Math.max(0, parseFloat(item.quantity) || 0),
+                price: Math.max(0, parseFloat(item.price) || 0),
+                totalPrice: Math.max(0, parseFloat(item.totalPrice) || 0),
+                isWeighted: Boolean(item.isWeighted)
+            }))
+            .filter(item => item.description.length > 0 || item.totalPrice > 0);
+
         const receiptDoc = {
             type: 'receipt',
-            name: merchantName.trim(),
+            name: sanitizedMerchantName,
             date: transactionDate,
-            total: Math.round(total * 100) / 100, // Ensure proper decimal precision
-            subtotal: subtotal ? Math.round(subtotal * 100) / 100 : null,
-            taxAmount: taxAmount ? Math.round(taxAmount * 100) / 100 : null,
-            items: items.filter(item => item !== null), // Remove any null items
-            createdAt: new Date().toISOString()
+            total: validatedTotal,
+            subtotal: validatedSubtotal,
+            taxAmount: validatedTaxAmount,
+            items: validatedItems,
+            userId: userId,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
         };
 
-        console.log('Saving receipt to database:', receiptDoc.name);
+        console.log('Saving receipt to database:', { 
+            merchant: receiptDoc.name, 
+            total: receiptDoc.total, 
+            itemCount: receiptDoc.items.length,
+            userId 
+        });
+        
         const doc = await db.insert(receiptDoc);
         
         // Map _id to id for frontend compatibility and remove internal fields
-        const { _id, type, createdAt, updatedAt, ...publicFields } = doc;
+        const { _id, type, ...publicFields } = doc;
         return { id: _id, ...publicFields };
     } catch (error) {
         console.error('Failed to save receipt:', error);
@@ -119,27 +209,64 @@ const saveReceipt = async (receiptData) => {
     }
 };
 
-const getReceipts = async () => {
+const getReceipts = async (userId = null, options = {}) => {
     try {
         console.log('Fetching receipts from database...');
-        const docs = await db.find({ type: 'receipt' })
-            .sort({ createdAt: -1, date: -1 })
-            .limit(50);
         
-        console.log(`Found ${docs.length} receipts`);
+        // Require userId for security
+        if (!userId) {
+            throw new Error('Authentication required - no user ID provided');
+        }
+        
+        // Validate userId format (should be a non-empty string)
+        if (typeof userId !== 'string' || userId.trim().length === 0) {
+            throw new Error('Invalid user ID format');
+        }
+        
+        // Extract pagination options
+        const { page = 1, limit = 20, sortBy = 'createdAt', sortOrder = -1 } = options;
+        const skip = (page - 1) * limit;
+        
+        // Build query to get only the user's receipts
+        const query = { 
+            type: 'receipt',
+            userId: userId
+        };
+        
+        // Get total count for pagination
+        const total = await db.count(query);
+        
+        // Build sort object
+        const sortOptions = {};
+        sortOptions[sortBy] = sortOrder;
+        
+        // Fetch receipts with pagination
+        const docs = await db.find(query)
+            .sort(sortOptions)
+            .skip(skip)
+            .limit(limit);
+        
+        console.log(`Found ${docs.length} receipts (page ${page}/${Math.ceil(total / limit)}) for user ${userId}`);
         
         // Map _id to id for frontend compatibility and remove internal fields
-        return docs.map(doc => {
-            const { _id, type, createdAt, updatedAt, ...publicFields } = doc;
+        const receipts = docs.map(doc => {
+            const { _id, type, ...publicFields } = doc;
             return { id: _id, ...publicFields };
         });
+        
+        return {
+            data: receipts,
+            total,
+            page,
+            limit
+        };
     } catch (error) {
         console.error('Failed to fetch receipts:', error);
         throw new Error(`Database fetch failed: ${error.message}`);
     }
 };
 
-const deleteReceipt = async (id) => {
+const deleteReceipt = async (id, userId = null) => {
     try {
         if (!id || typeof id !== 'string') {
             throw new Error('Invalid receipt ID provided');
@@ -147,14 +274,27 @@ const deleteReceipt = async (id) => {
 
         console.log('Deleting receipt with ID:', id);
         
-        // First check if the receipt exists
-        const existingReceipt = await db.findOne({ _id: id, type: 'receipt' });
+        // Require userId for security
+        if (!userId) {
+            throw new Error('Authentication required - no user ID provided');
+        }
+        
+        // Validate userId format
+        if (typeof userId !== 'string' || userId.trim().length === 0) {
+            throw new Error('Invalid user ID format');
+        }
+        
+        // Build query - always require userId for security
+        const query = { _id: id, type: 'receipt', userId: userId };
+        
+        // First check if the receipt exists and user has permission
+        const existingReceipt = await db.findOne(query);
         if (!existingReceipt) {
-            return false; // Receipt not found
+            return false; // Receipt not found or user doesn't have permission
         }
 
         // Delete the receipt
-        const deleteResult = await db.remove({ _id: id }, {});
+        const deleteResult = await db.remove(query, {});
         console.log(`Deleted ${deleteResult} receipt(s)`);
         
         return deleteResult > 0;
